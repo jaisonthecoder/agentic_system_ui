@@ -203,8 +203,8 @@ export default function ChatView({ isOnline, initialGoal, onInitialGoalUsed }) {
     } catch (e) {
       // Fallback: non-streaming run
       try {
-        const { runAgent } = await import('../../api')
-        const result = await runAgent({ goal: text })
+        const { runGoal } = await import('../../api')
+        const result = await runGoal({ goal: text })
         const out = result?.result ? JSON.stringify(result.result, null, 2) : 'Done.'
         updateLastAgent(m => ({ ...m, typing: false, text: out }))
       } catch (e2) {

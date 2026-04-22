@@ -35,11 +35,13 @@ const s = {
 }
 
 const NAV = [
-  { id: 'chat',      icon: '💬', label: 'AI Chat' },
-  { id: 'tasks',     icon: '✅', label: 'Tasks', badge: true },
-  { id: 'agents',    icon: '🤖', label: 'Agents' },
-  { id: 'skills',    icon: '🔧', label: 'Skills' },
-  { id: 'dashboard', icon: '📊', label: 'Dashboard' },
+  { id: 'chat',       icon: '💬', label: 'AI Chat' },
+  { id: 'tasks',      icon: '✅', label: 'Tasks',        badge: true },
+  { id: 'agents',     icon: '🤖', label: 'Agents' },
+  { id: 'store',      icon: '🛒', label: 'Skill Store' },
+  { id: 'connectors', icon: '🔗', label: 'Connectors' },
+  { id: 'skills',     icon: '🔧', label: 'Registry' },
+  { id: 'dashboard',  icon: '📊', label: 'Dashboard' },
 ]
 
 const QUICK = [

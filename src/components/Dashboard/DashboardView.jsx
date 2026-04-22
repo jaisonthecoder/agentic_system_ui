@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchMetrics, fetchTasks, fetchSkills, fetchMcpServers } from '../../api'
+import { fetchHealth, fetchLLMConfig, updateLLMConfig } from '../../api'
 
 const STATUS_COLOR = { running: 'var(--blue)', done: 'var(--accent)', failed: 'var(--red)' }
 
@@ -53,17 +54,51 @@ export default function DashboardView() {
   const [tasks, setTasks] = useState([])
   const [skills, setSkills] = useState([])
   const [mcp, setMcp] = useState({})
+  const [health, setHealth] = useState(null)
+  const [llmConfig, setLLMConfig] = useState(null)
   const [loading, setLoading] = useState(true)
+  // Switcher state
+  const [switching, setSwitching] = useState(false)
+  const [switchMsg, setSwitchMsg] = useState(null)
+  const [selProvider, setSelProvider] = useState(null)
+  const [selModel, setSelModel] = useState(null)
 
   const load = async () => {
     try {
-      const [m, t, sk, mc] = await Promise.allSettled([fetchMetrics(), fetchTasks(), fetchSkills(), fetchMcpServers()])
+      const [m, t, sk, mc, h, lc] = await Promise.allSettled([
+        fetchMetrics(), fetchTasks(), fetchSkills(), fetchMcpServers(),
+        fetchHealth(), fetchLLMConfig()
+      ])
       if (m.status === 'fulfilled') setMetrics(m.value)
       if (t.status === 'fulfilled') setTasks(t.value)
       if (sk.status === 'fulfilled') setSkills(sk.value)
       if (mc.status === 'fulfilled') setMcp(mc.value)
+      if (h.status === 'fulfilled') setHealth(h.value)
+      if (lc.status === 'fulfilled') {
+        setLLMConfig(lc.value)
+        setSelProvider(lc.value.provider)
+        setSelModel(lc.value.model)
+      }
     } catch {}
     setLoading(false)
+  }
+
+  const handleSwitch = async () => {
+    if (!selProvider || !selModel) return
+    setSwitching(true)
+    setSwitchMsg(null)
+    try {
+      const res = await updateLLMConfig(selProvider, selModel)
+      setSwitchMsg({ ok: true, text: `Switched to ${res.provider} / ${res.model}` })
+      // Refresh health + config to reflect change
+      const [h, lc] = await Promise.allSettled([fetchHealth(), fetchLLMConfig()])
+      if (h.status === 'fulfilled') setHealth(h.value)
+      if (lc.status === 'fulfilled') setLLMConfig(lc.value)
+    } catch (e) {
+      setSwitchMsg({ ok: false, text: `Error: ${e.message}` })
+    }
+    setSwitching(false)
+    setTimeout(() => setSwitchMsg(null), 4000)
   }
 
   useEffect(() => { load() }, [])
@@ -97,6 +132,108 @@ export default function DashboardView() {
             </div>
           ))}
         </div>
+
+        {/* LLM Provider Switcher */}
+        {llmConfig && (() => {
+          const PROVIDER_ICON  = { gemini: '✦', anthropic: '◆', openai: '⬡', ollama: '🦙' }
+          const PROVIDER_COLOR = { gemini: '#4285F4', anthropic: '#d97706', openai: '#10b981', ollama: '#8b5cf6' }
+          const activeColor = PROVIDER_COLOR[health?.llm_provider] || 'var(--accent)'
+          const models = llmConfig.models_by_provider?.[selProvider] || []
+          const apiKeys = llmConfig.api_keys_set || {}
+
+          return (
+            <div style={{ ...s.dcard, marginBottom: 20, overflow: 'visible' }}>
+              <div style={{ ...s.dchdr, display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ color: activeColor }}>{PROVIDER_ICON[health?.llm_provider] || '🤖'}</span>
+                LLM Provider
+                <span style={{
+                  marginLeft: 'auto', fontSize: 10, fontWeight: 700, padding: '2px 9px',
+                  borderRadius: 20, background: 'rgba(110,231,183,.15)', color: 'var(--accent)',
+                  border: '1px solid rgba(110,231,183,.3)',
+                }}>● {health?.llm_provider?.toUpperCase() || '—'} · {health?.llm_model || '—'}</span>
+              </div>
+
+              <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+                {/* Provider tiles */}
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase',
+                                color: 'var(--muted2)', marginBottom: 10 }}>Select Provider</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
+                    {(llmConfig.available_providers || []).map(p => {
+                      const col   = PROVIDER_COLOR[p] || 'var(--accent)'
+                      const isAct = p === selProvider
+                      const hasKey = apiKeys[p]
+                      return (
+                        <button key={p} onClick={() => {
+                          setSelProvider(p)
+                          setSelModel((llmConfig.models_by_provider?.[p] || [])[0] || '')
+                          setSwitchMsg(null)
+                        }} style={{
+                          padding: '12px 8px', borderRadius: 10, cursor: 'pointer',
+                          border: `2px solid ${isAct ? col : 'var(--border)'}`,
+                          background: isAct ? `${col}18` : 'var(--panel2)',
+                          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                          transition: 'all .15s',
+                        }}>
+                          <span style={{ fontSize: 22, color: col }}>{PROVIDER_ICON[p] || '🤖'}</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: isAct ? col : 'var(--text)',
+                                         textTransform: 'capitalize' }}>{p}</span>
+                          <span style={{
+                            fontSize: 9, padding: '1px 6px', borderRadius: 8,
+                            background: hasKey ? 'rgba(110,231,183,.15)' : 'rgba(239,68,68,.1)',
+                            color: hasKey ? 'var(--accent)' : '#ef4444',
+                          }}>{p === 'ollama' ? 'local' : hasKey ? 'key set' : 'no key'}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Model dropdown */}
+                {selProvider && (
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase',
+                                  color: 'var(--muted2)', marginBottom: 8 }}>Select Model</div>
+                    <select value={selModel || ''} onChange={e => setSelModel(e.target.value)}
+                      style={{ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13,
+                               background: 'var(--panel2)', border: '1px solid var(--border2)',
+                               color: 'var(--text)', outline: 'none' }}>
+                      {models.map(m => <option key={m} value={m}>{m}</option>)}
+                      {/* allow typing a custom model */}
+                    </select>
+                    <input placeholder="or type a custom model name…"
+                      style={{ width: '100%', marginTop: 6, padding: '7px 12px', borderRadius: 8,
+                               fontSize: 12, background: 'var(--panel2)', border: '1px solid var(--border)',
+                               color: 'var(--muted2)', outline: 'none', boxSizing: 'border-box' }}
+                      onChange={e => e.target.value && setSelModel(e.target.value)} />
+                  </div>
+                )}
+
+                {/* Switch button + feedback */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <button onClick={handleSwitch} disabled={switching ||
+                      (selProvider === health?.llm_provider && selModel === health?.llm_model)}
+                    style={{
+                      padding: '10px 22px', borderRadius: 8, fontWeight: 700, fontSize: 13,
+                      background: 'var(--accent)', color: '#000', border: 'none', cursor: 'pointer',
+                      opacity: (switching || (selProvider === health?.llm_provider && selModel === health?.llm_model)) ? 0.5 : 1,
+                    }}>
+                    {switching ? 'Switching…' : 'Apply'}
+                  </button>
+                  {switchMsg && (
+                    <span style={{ fontSize: 12, color: switchMsg.ok ? 'var(--accent)' : '#ef4444' }}>
+                      {switchMsg.ok ? '✓' : '✗'} {switchMsg.text}
+                    </span>
+                  )}
+                  <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--muted2)' }}>
+                    Session only — edit config/.env to persist
+                  </span>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Recent Tasks + Skills */}
         <div style={s.dgrid}>

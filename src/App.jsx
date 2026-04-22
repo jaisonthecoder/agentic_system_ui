@@ -6,6 +6,8 @@ import ChatView from './components/Chat/ChatView'
 import TasksView from './components/Tasks/TasksView'
 import AgentsView from './components/Agents/AgentsView'
 import SkillsView from './components/Skills/SkillsView'
+import SkillStoreView from './components/Skills/SkillStoreView'
+import ConnectorView from './components/Connectors/ConnectorView'
 import DashboardView from './components/Dashboard/DashboardView'
 
 export default function App() {
@@ -61,11 +63,13 @@ export default function App() {
 
   // ── View map ───────────────────────────────────────────────────────────────
   const views = {
-    chat:      <ChatView isOnline={connection.status === 'online'} initialGoal={quickGoal} onInitialGoalUsed={() => setQuickGoal(null)} />,
-    tasks:     <TasksView onViewTask={handleViewTask} />,
-    agents:    <AgentsView onRunAgent={handleRunAgent} />,
-    skills:    <SkillsView />,
-    dashboard: <DashboardView />,
+    chat:       <ChatView isOnline={connection.status === 'online'} initialGoal={quickGoal} onInitialGoalUsed={() => setQuickGoal(null)} />,
+    tasks:      <TasksView onViewTask={handleViewTask} />,
+    agents:     <AgentsView onRunAgent={handleRunAgent} />,
+    store:      <SkillStoreView />,
+    connectors: <ConnectorView />,
+    skills:     <SkillsView />,
+    dashboard:  <DashboardView />,
   }
 
   return (
