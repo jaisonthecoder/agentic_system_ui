@@ -1,0 +1,50 @@
+:root {
+  --bg: #0e1117;
+  --panel: #161b27;
+  --panel2: #1c2333;
+  --panel3: #212840;
+  --border: #252d3d;
+  --border2: #2f3a52;
+  --accent: #6ee7b7;
+  --accent-dim: rgba(110,231,183,0.12);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.12);
+  --purple: #c084fc;
+  --purple-dim: rgba(192,132,252,0.12);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.12);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.12);
+  --text: #e8edf5;
+  --muted: #5a6580;
+  --muted2: #8892a4;
+  --head: 'Cabinet Grotesk', sans-serif;
+  --mono: 'Fira Code', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body, #root { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--head);
+  font-size: 14px;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+button { cursor: pointer; font-family: var(--head); }
+textarea, input, select { font-family: var(--head); }
+
+/* ── ANIMATIONS ── */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+@keyframes slideUp { from{transform:translateY(18px);opacity:0} to{transform:none;opacity:1} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ── LAYOUT ── */
+.app { display: flex; flex-direction: column; height: 100%; }
+.app-body { display: flex; flex: 1; overflow: hidden; }
+.main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
