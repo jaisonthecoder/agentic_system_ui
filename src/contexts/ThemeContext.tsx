@@ -13,23 +13,21 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     try {
       const stored = localStorage.getItem('agentosTheme')
-      const t: Theme = (stored === 'light' || stored === 'dark') ? stored : 'dark'
-      // Apply immediately (before first paint) to prevent flash of wrong theme
+      const t: Theme = (stored === 'light' || stored === 'dark') ? stored : 'light'
+      // Apply immediately (before first paint) — prevents flash of wrong theme
       document.documentElement.setAttribute('data-theme', t)
+      document.documentElement.setAttribute('data-density', 'comfortable')
       return t
     } catch {
-      document.documentElement.setAttribute('data-theme', 'dark')
-      return 'dark'
+      document.documentElement.setAttribute('data-theme', 'light')
+      document.documentElement.setAttribute('data-density', 'comfortable')
+      return 'light'
     }
   })
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    try {
-      localStorage.setItem('agentosTheme', theme)
-    } catch {
-      // ignore storage errors
-    }
+    try { localStorage.setItem('agentosTheme', theme) } catch { /* ignore */ }
   }, [theme])
 
   const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))

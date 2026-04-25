@@ -1,14 +1,33 @@
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+// ─── Atelier Animations ────────────────────────────────────────────────────────
+
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes pulse    { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
+@keyframes blink    { 0%, 100% { opacity: 1 } 50% { opacity: .3 } }
+@keyframes bounce   { 0%, 60%, 100% { transform: translateY(0) } 30% { transform: translateY(-6px) } }
+
+@keyframes fadeIn   { from { opacity: 0 } to { opacity: 1 } }
+@keyframes fadeOut  { from { opacity: 1 } to { opacity: 0 } }
+
+// Modal / Sheet entrance — spring up from slight below
+@keyframes sheetIn  {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
-@keyframes bounce {
-  0%, 60%, 100% { transform: translateY(0); }
-  30%            { transform: translateY(-6px); }
+// Scale in (context menus, dropdowns)
+@keyframes scaleIn  {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
 }
 
-@keyframes slideUp {
+// Slide in from right
+@keyframes slideIn  {
+  from { transform: translateX(8px); opacity: 0; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+
+// Slide up (legacy alias)
+@keyframes slideUp  {
   from { transform: translateY(18px); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
@@ -16,13 +35,4 @@
 @keyframes slideInRight {
   from { transform: translateX(100%); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }

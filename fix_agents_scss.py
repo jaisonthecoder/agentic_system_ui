@@ -1,3 +1,10 @@
+"""Rewrite AgentsView.module.scss — fix card layout + full tabbed modal classes."""
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+path = os.path.join(BASE, 'src/components/Agents/AgentsView.module.scss')
+with open(path, 'w', encoding='utf-8') as f:
+    f.write("""
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
@@ -248,68 +255,6 @@
 // Create modal also uses .modal/.overlay + these same field classes
 // Shared with create modal inline styles via style= props (no separate class needed)
 
-// Create Agent modal — scrollable body variant
-// .modal + .overlay are shared with config modal
-.createBody {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  @include custom-scrollbar;
-}
-
-// Archetype 2×2 picker
-.archetypeGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-.archetypeBtn {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
-  padding: 12px 14px;
-  border-radius: $radius-md;
-  border: 1px solid var(--hairline-strong);
-  background: var(--bg-elev-2);
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s var(--ease-out), background 0.15s var(--ease-out);
-  &:hover { border-color: var(--accent); background: var(--bg-tint); }
-}
-.archetypeBtnSel {
-  // border-color and background set via inline style (colour-per-archetype)
-}
-.archetypeIcon { font-size: 20px; margin-bottom: 2px; }
-.archetypeLabel {
-  font-size: $text-sm;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-}
-.archetypeDesc {
-  font-size: $text-xs;
-  color: var(--text-3);
-  line-height: 1.4;
-  margin-top: 1px;
-}
-
-// Error message
-.errorMsg {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: $radius-sm;
-  font-size: $text-xs;
-  background: color-mix(in oklab, var(--danger) 10%, transparent);
-  color: var(--danger);
-  border: 1px solid color-mix(in oklab, var(--danger) 30%, transparent);
-  line-height: 1.5;
-}
-
 // Pill badges (drawer usage)
 .pill {
   display: inline-flex; align-items: center; padding: 3px 9px;
@@ -319,3 +264,6 @@
 .pillActive  { background: color-mix(in oklab, var(--success) 12%, transparent); border-color: color-mix(in oklab, var(--success) 35%, transparent); color: var(--success); }
 .pillDanger  { background: color-mix(in oklab, var(--danger)  12%, transparent); border-color: color-mix(in oklab, var(--danger)  35%, transparent); color: var(--danger); }
 .pillNeutral { background: transparent; border-color: var(--hairline-strong); color: var(--text-3); }
+""".strip() + '\n')
+
+print('AgentsView.module.scss written.')

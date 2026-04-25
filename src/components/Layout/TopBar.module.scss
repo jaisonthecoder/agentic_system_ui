@@ -2,164 +2,97 @@
 @use '../../styles/mixins' as *;
 
 .topbar {
-  height: 52px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  @include flex-start;
-  padding: 0 $sp-5;
-  gap: $sp-4;
-  flex-shrink: 0;
+  position: sticky;
+  top: 0;
   z-index: $z-topbar;
-  position: relative;
-  box-shadow: var(--shadow-sm);
+  backdrop-filter: var(--nav-blur);
+  -webkit-backdrop-filter: var(--nav-blur);
+  background: var(--nav-bg);
+  box-shadow: inset 0 -1px 0 var(--hairline);
+  flex-shrink: 0;
 }
 
-.logo {
-  @include flex-start;
-  @include btn-reset;
-  gap: $sp-2;
-  font-size: $text-lg;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+.inner {
+  padding: 18px 36px 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.titleGroup { flex: 1; min-width: 0; }
+
+.eyebrow { @include eyebrow; margin-bottom: 8px; }
+
+.title {
+  font-family: $font-display;
+  font-style: italic;
+  font-size: clamp(22px, 2.8vw, 32px);
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--text);
-  flex-shrink: 0;
-
-  &:hover { color: var(--accent); }
 }
 
-.logoDot {
-  width: 22px;
-  height: 22px;
-  border-radius: $radius-sm;
-  background: linear-gradient(135deg, var(--accent), var(--blue));
-  @include flex-center;
-  font-size: $text-2xs;
-  color: #000;
-  font-weight: 900;
-  flex-shrink: 0;
-}
-
-.divider {
-  width: 1px;
-  height: 24px;
-  background: var(--border);
-  flex-shrink: 0;
-}
-
-.nav {
-  @include flex-start;
-  gap: 2px;
-  overflow-x: auto;
-  @include custom-scrollbar;
-}
-
-.navBtn {
-  @include btn-reset;
-  padding: 6px 14px;
-  border-radius: $radius-sm;
-  font-size: $text-sm;
-  font-weight: 600;
-  color: var(--muted2);
-  background: transparent;
-  border: 1px solid transparent;
-  white-space: nowrap;
-
-  &:hover {
-    color: var(--text);
-    background: var(--panel2);
-  }
-}
-
-.navBtnActive {
-  color: var(--text);
-  background: var(--panel2);
-  border-color: var(--border2);
+.lede {
+  font-size: $text-md;
+  color: var(--text-3);
+  margin-top: 10px;
+  max-width: 480px;
+  line-height: 1.5;
 }
 
 .right {
-  margin-left: auto;
-  @include flex-start;
-  gap: $sp-2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
+  margin-left: auto;
+  padding-bottom: 2px;
 }
 
 .urlBadge {
   padding: 4px 10px;
-  background: var(--panel2);
-  border: 1px solid var(--border2);
+  background: var(--bg-elev-2);
+  border: 1px solid var(--hairline);
   border-radius: $radius-sm;
   font-family: $font-mono;
   font-size: $text-xs;
-  color: var(--muted2);
-  max-width: 180px;
+  color: var(--text-3);
+  max-width: 160px;
   @include truncate;
 }
 
 .statusPill {
-  @include flex-start;
+  display: flex;
+  align-items: center;
   gap: 6px;
   padding: 4px 10px;
   border-radius: $radius-full;
   font-size: $text-xs;
-  font-weight: 600;
+  font-weight: 500;
   border: 1px solid transparent;
   white-space: nowrap;
 }
-
-.statusOnline {
-  background: var(--accentDim);
-  border-color: rgba(110, 231, 183, 0.25);
-  color: var(--accent);
-}
-
-.statusOffline {
-  background: var(--dangerDim);
-  border-color: rgba(248, 113, 113, 0.25);
-  color: var(--danger);
-}
-
-.statusConnecting {
-  background: var(--amberDim);
-  border-color: rgba(251, 191, 36, 0.25);
-  color: var(--amber);
-}
+.statusOnline    { background: color-mix(in oklab, var(--success) 12%, transparent); border-color: color-mix(in oklab, var(--success) 30%, transparent); color: var(--success); }
+.statusOffline   { background: color-mix(in oklab, var(--danger)  12%, transparent); border-color: color-mix(in oklab, var(--danger)  30%, transparent); color: var(--danger); }
+.statusConnecting{ background: color-mix(in oklab, var(--warning) 12%, transparent); border-color: color-mix(in oklab, var(--warning) 30%, transparent); color: var(--warning); }
 
 .statusDot {
-  width: 6px;
-  height: 6px;
-  border-radius: $radius-full;
-  background: currentColor;
-  animation: blink 2s infinite;
-  flex-shrink: 0;
+  width: 5px; height: 5px; border-radius: $radius-full;
+  background: currentColor; animation: pulse 2s infinite; flex-shrink: 0;
 }
 
 .themeToggle {
-  @include btn-reset;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-md;
-  @include flex-center;
-  font-size: 15px;
-  color: var(--muted2);
-  border: 1px solid var(--border2);
-  background: var(--panel2);
-
-  &:hover {
-    color: var(--text);
-    border-color: var(--accent);
-    background: var(--accentDim);
-  }
+  width: 34px; height: 34px; border-radius: $radius-full;
+  border: 1px solid var(--hairline-strong); color: var(--text-2);
+  display: grid; place-items: center; font-size: 15px;
+  transition: border-color 0.15s, color 0.15s;
+  &:hover { color: var(--text); border-color: var(--accent); }
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-full;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  @include flex-center;
-  font-size: $text-xs;
-  font-weight: 800;
-  color: #fff;
-  flex-shrink: 0;
-  user-select: none;
+  width: 34px; height: 34px; border-radius: $radius-md;
+  background: var(--bg-elev-2); border: 1px solid var(--hairline);
+  display: grid; place-items: center;
+  font-family: $font-display; font-style: italic; font-size: 13px;
+  color: var(--accent);
 }

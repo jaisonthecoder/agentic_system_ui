@@ -74,37 +74,38 @@ export default function App() {
 
   return (
     <div className="app">
-      <TopBar connection={connection} />
-      <div className="app-body">
-        <Sidebar runningCount={runningCount} onQuickRun={handleQuickRun} />
-        <main className="main">
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback={<Spinner />}>
-              <Routes>
-                <Route path="/" element={<Navigate to="/chat" replace />} />
-                <Route
-                  path="/chat"
-                  element={
-                    <ChatView
-                      isOnline={connection.status === 'online'}
-                      initialGoal={quickGoal}
-                      onInitialGoalUsed={() => setQuickGoal(null)}
-                    />
-                  }
-                />
-                <Route path="/tasks"      element={<TasksView onViewTask={handleViewTask} />} />
-                <Route path="/agents"     element={<AgentsView onQuickRun={handleQuickRun} />} />
-                <Route path="/skills"     element={<SkillsView />} />
-                <Route path="/store"      element={<SkillStoreView />} />
-                <Route path="/connectors" element={<ConnectorView />} />
-                <Route path="/dashboard"  element={<DashboardView />} />
-                <Route path="/projects"   element={<ProjectsView />} />
-                <Route path="*"           element={<Navigate to="/chat" replace />} />
-              </Routes>
-            </Suspense>
-          </ErrorBoundary>
-        </main>
-      </div>
+      {/* Sidebar is grid column 1 */}
+      <Sidebar runningCount={runningCount} onQuickRun={handleQuickRun} />
+      {/* Main is grid column 2 */}
+      <main className="main">
+        {/* TopBar sits at top of main column — sticky per-view display header */}
+        <TopBar connection={connection} />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/chat" replace />} />
+              <Route
+                path="/chat"
+                element={
+                  <ChatView
+                    isOnline={connection.status === 'online'}
+                    initialGoal={quickGoal}
+                    onInitialGoalUsed={() => setQuickGoal(null)}
+                  />
+                }
+              />
+              <Route path="/tasks"      element={<TasksView onViewTask={handleViewTask} />} />
+              <Route path="/agents"     element={<AgentsView onQuickRun={handleQuickRun} />} />
+              <Route path="/skills"     element={<SkillsView />} />
+              <Route path="/store"      element={<SkillStoreView />} />
+              <Route path="/connectors" element={<ConnectorView />} />
+              <Route path="/dashboard"  element={<DashboardView />} />
+              <Route path="/projects"   element={<ProjectsView />} />
+              <Route path="*"           element={<Navigate to="/chat" replace />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+      </main>
     </div>
   )
 }

@@ -2,91 +2,168 @@
 @use 'mixins' as *;
 @use 'animations';
 
-// ─── Theme tokens — Dark (default) ────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Atelier token system — editorial, warm, type-led.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+:root {
+  // Per-hue accents — used only as left bars, dots, numerals. Never solid fills.
+  --c-rust:   oklch(64% 0.16 35);
+  --c-moss:   oklch(58% 0.10 145);
+  --c-ocean:  oklch(55% 0.12 235);
+  --c-violet: oklch(58% 0.16 295);
+  --c-clay:   oklch(68% 0.12 60);
+  --c-coral:  oklch(68% 0.18 20);
+  --c-slate:  oklch(58% 0.04 245);
+  --c-amber:  oklch(72% 0.16 75);
+
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   16px;
+  --r-pill: 9999px;
+
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  // Density system
+  --row-pad:  16px;
+  --card-pad: 22px;
+  --grid-gap: 18px;
+}
+
+// ── Density modes ─────────────────────────────────────────────────────────────
+[data-density='cozy']        { --row-pad: 12px; --card-pad: 16px; --grid-gap: 12px; }
+[data-density='comfortable'] { --row-pad: 16px; --card-pad: 22px; --grid-gap: 18px; }
+[data-density='spacious']    { --row-pad: 22px; --card-pad: 30px; --grid-gap: 26px; }
+
+// ── Light theme — warm paper ───────────────────────────────────────────────────
 :root,
-[data-theme='dark'] {
-  --bg:      #0e1117;
-  --panel:   #161b27;
-  --panel2:  #1c2333;
-  --panel3:  #212840;
-  --border:  #252d3d;
-  --border2: #2f3a52;
-
-  --accent:    #6ee7b7;
-  --accentDim: rgba(110, 231, 183, 0.12);
-  --accentFg:  #000000;
-
-  --blue:    #60a5fa;
-  --blueDim: rgba(96, 165, 250, 0.12);
-
-  --purple:    #c084fc;
-  --purpleDim: rgba(192, 132, 252, 0.12);
-
-  --amber:    #fbbf24;
-  --amberDim: rgba(251, 191, 36, 0.12);
-
-  --danger:    #f87171;
-  --dangerDim: rgba(248, 113, 113, 0.12);
-
-  --text:   #e8edf5;
-  --muted:  #5a6580;
-  --muted2: #8892a4;
-
-  --overlay:    rgba(0, 0, 0, 0.75);
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.6);
-}
-
-// ─── Theme tokens — Light ─────────────────────────────────────────────────────
 [data-theme='light'] {
-  --bg:      #f0f4f8;
-  --panel:   #ffffff;
-  --panel2:  #f1f5f9;
-  --panel3:  #e2e8f0;
-  --border:  #e2e8f0;
-  --border2: #cbd5e1;
+  --bg:        oklch(98.5% 0.005 80);
+  --bg-elev:   oklch(100% 0 0);
+  --bg-elev-2: oklch(96.5% 0.006 80);
+  --bg-tint:   oklch(92% 0.008 80 / 0.65);
+  --bg-tint-2: oklch(88% 0.010 80 / 0.85);
 
-  --accent:    #059669;
-  --accentDim: rgba(5, 150, 105, 0.1);
-  --accentFg:  #ffffff;
+  --hairline:        oklch(20% 0.005 80 / 0.10);
+  --hairline-strong: oklch(20% 0.005 80 / 0.22);
 
-  --blue:    #2563eb;
-  --blueDim: rgba(37, 99, 235, 0.1);
+  --text:            oklch(20% 0.012 60);
+  --text-2:          oklch(35% 0.012 60);
+  --text-3:          oklch(50% 0.010 60);
+  --text-4:          oklch(70% 0.008 60);
+  --text-on-accent:  #fff;
 
-  --purple:    #7c3aed;
-  --purpleDim: rgba(124, 58, 237, 0.1);
+  --accent:      var(--c-rust);
+  --accent-soft: oklch(64% 0.16 35 / 0.12);
 
-  --amber:    #d97706;
-  --amberDim: rgba(217, 119, 6, 0.1);
+  --success: oklch(58% 0.14 150);
+  --warning: oklch(70% 0.15 65);
+  --danger:  oklch(58% 0.20 25);
 
-  --danger:    #dc2626;
-  --dangerDim: rgba(220, 38, 38, 0.1);
+  --shadow-sm: 0 1px 2px oklch(20% 0.012 60 / 0.05);
+  --shadow-md: 0 6px 18px oklch(20% 0.012 60 / 0.08), 0 1px 2px oklch(20% 0.012 60 / 0.04);
+  --shadow-lg: 0 24px 56px -16px oklch(20% 0.012 60 / 0.18), 0 4px 12px oklch(20% 0.012 60 / 0.06);
 
-  --text:   #0f172a;
-  --muted:  #94a3b8;
-  --muted2: #64748b;
+  --nav-blur: saturate(160%) blur(18px);
+  --nav-bg:   oklch(98.5% 0.005 80 / 0.82);
 
-  --overlay:    rgba(0, 0, 0, 0.5);
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.12);
-  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.16);
+  --grain-opacity: 0.04;
+
+  // Legacy aliases — keep for any components not yet fully migrated
+  --panel:   var(--bg-elev);
+  --panel2:  var(--bg-elev-2);
+  --panel3:  var(--bg-tint);
+  --border:  var(--hairline);
+  --border2: var(--hairline-strong);
+  --muted:   var(--text-4);
+  --muted2:  var(--text-3);
+  --overlay: oklch(20% 0.012 60 / 0.55);
+  --accentDim: var(--accent-soft);
+  --accentFg:  var(--text-on-accent);
+  --blue:    var(--c-ocean);
+  --blueDim: oklch(55% 0.12 235 / 0.12);
+  --purple:  var(--c-violet);
+  --purpleDim: oklch(58% 0.16 295 / 0.12);
+  --amber:   var(--c-amber);
+  --amberDim: oklch(72% 0.16 75 / 0.12);
+  --dangerDim: oklch(58% 0.20 25 / 0.12);
 }
 
-// ─── Reset ────────────────────────────────────────────────────────────────────
+// ── Dark theme — reading room ──────────────────────────────────────────────────
+[data-theme='dark'] {
+  --bg:        oklch(15% 0.008 60);
+  --bg-elev:   oklch(19% 0.008 60);
+  --bg-elev-2: oklch(23% 0.008 60);
+  --bg-tint:   oklch(30% 0.010 60 / 0.60);
+  --bg-tint-2: oklch(36% 0.012 60 / 0.80);
+
+  --hairline:        oklch(80% 0.012 60 / 0.10);
+  --hairline-strong: oklch(80% 0.012 60 / 0.22);
+
+  --text:           oklch(96% 0.008 80);
+  --text-2:         oklch(85% 0.008 80);
+  --text-3:         oklch(65% 0.010 60);
+  --text-4:         oklch(45% 0.010 60);
+  --text-on-accent: oklch(15% 0.008 60);
+
+  --accent:      oklch(74% 0.14 40);
+  --accent-soft: oklch(74% 0.14 40 / 0.16);
+
+  --success: oklch(72% 0.15 150);
+  --warning: oklch(78% 0.16 65);
+  --danger:  oklch(70% 0.20 25);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.3);
+  --shadow-lg: 0 28px 64px -16px rgba(0,0,0,.7), 0 4px 12px rgba(0,0,0,.4);
+
+  --nav-blur: saturate(160%) blur(20px);
+  --nav-bg:   oklch(15% 0.008 60 / 0.78);
+
+  --grain-opacity: 0.07;
+
+  // Legacy aliases
+  --panel:   var(--bg-elev);
+  --panel2:  var(--bg-elev-2);
+  --panel3:  var(--bg-tint);
+  --border:  var(--hairline);
+  --border2: var(--hairline-strong);
+  --muted:   var(--text-4);
+  --muted2:  var(--text-3);
+  --overlay: rgba(0,0,0,0.75);
+  --accentDim: var(--accent-soft);
+  --accentFg:  var(--text-on-accent);
+  --blue:    oklch(62% 0.14 235);
+  --blueDim: oklch(62% 0.14 235 / 0.16);
+  --purple:  oklch(65% 0.18 295);
+  --purpleDim: oklch(65% 0.18 295 / 0.16);
+  --amber:   oklch(78% 0.17 75);
+  --amberDim: oklch(78% 0.17 75 / 0.16);
+  --dangerDim: oklch(70% 0.20 25 / 0.16);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Reset + base
+// ═══════════════════════════════════════════════════════════════════════════════
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html,
 body,
 #root {
   height: 100%;
-  overflow: hidden;
+}
+
+html {
+  color-scheme: light;
+  &[data-theme='dark'] { color-scheme: dark; }
 }
 
 body {
@@ -97,77 +174,132 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.2s ease, color 0.2s ease;
-}
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.005em;
+  font-feature-settings: 'ss01', 'cv11';
+  overscroll-behavior: none;
+  transition: background 0.3s $ease-out, color 0.3s $ease-out;
 
-// ─── Scrollbars ───────────────────────────────────────────────────────────────
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: $radius-full; }
-
-// ─── Form defaults ────────────────────────────────────────────────────────────
-button { cursor: pointer; font-family: $font-sans; }
-input, textarea, select { font-family: $font-sans; }
-code, pre { font-family: $font-mono; }
-a { text-decoration: none; color: inherit; }
-
-// ─── App layout ───────────────────────────────────────────────────────────────
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.app-body {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-.main {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-// ─── Spinner (Suspense fallback) ──────────────────────────────────────────────
-.loading-spinner {
-  @include flex-col;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  gap: $sp-3;
-  color: var(--muted2);
-  font-size: $text-sm;
-
-  &::before {
+  // Film grain overlay — signature Atelier texture
+  &::after {
     content: '';
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--accent);
-    border-radius: $radius-full;
-    animation: spin 0.8s linear infinite;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: overlay;
   }
 }
 
-// ─── Error boundary fallback ──────────────────────────────────────────────────
+// ── Scrollbars ────────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tint-2);
+  border-radius: $radius-full;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+// ── Base element defaults ─────────────────────────────────────────────────────
+button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+button { background: none; border: none; cursor: pointer; padding: 0; }
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent-soft); color: var(--text); }
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-radius: var(--r-sm);
+}
+
+// ── Utility type classes ──────────────────────────────────────────────────────
+.display {
+  font-family: $font-display;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-family: $font-sans;
+}
+
+.numeral {
+  font-family: $font-display;
+  font-style: italic;
+  color: var(--text-4);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// App layout — sidebar + main
+// ═══════════════════════════════════════════════════════════════════════════════
+.app {
+  display: grid;
+  grid-template-columns: 232px 1fr;
+  min-height: 100vh;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+
+  @media (max-width: 880px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Legacy wrappers — still needed by App.tsx
+.app-body {
+  display: contents; // lets grid flow work transparently
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+// ── Spinner (Suspense fallback) ───────────────────────────────────────────────
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid var(--hairline-strong);
+    border-top-color: var(--accent);
+    border-radius: $radius-full;
+    animation: spin 1s linear infinite;
+  }
+}
+
+// ── Error boundary ────────────────────────────────────────────────────────────
 .error-fallback {
-  @include flex-col;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
   gap: $sp-4;
   padding: $sp-8;
   text-align: center;
-  color: var(--muted2);
+  color: var(--text-3);
 
-  h2 { font-size: $text-xl; color: var(--text); }
+  h2 { font-size: $text-2xl; color: var(--text); font-family: $font-display; font-style: italic; }
   p  { font-size: $text-sm; max-width: 400px; line-height: 1.6; }
-
-  button {
-    @include btn-secondary;
-    margin-top: $sp-2;
-  }
+  button { @include atelier-btn(secondary); margin-top: $sp-2; }
 }
+

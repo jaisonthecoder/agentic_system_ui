@@ -1,3 +1,14 @@
+"""Rewrite SkillStoreView.module.scss with all actual TSX class names."""
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+def w(rel, content):
+    path = os.path.join(BASE, rel)
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(content.strip() + '\n')
+    print(f'  wrote {rel}')
+
+w('src/components/Skills/SkillStoreView.module.scss', """
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
@@ -168,3 +179,5 @@
 .skIcon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 .skName { font-family: $font-mono; font-size: $text-sm; color: var(--text); font-weight: 500; }
 .skDesc { font-size: $text-xs; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
+""")
+print('SkillStoreView SCSS written.')

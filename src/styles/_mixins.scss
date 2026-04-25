@@ -1,141 +1,131 @@
 @use 'variables' as *;
 
-// ─── Flexbox ──────────────────────────────────────────────────────────────────
-@mixin flex-center {
-  display: flex;
+// Atelier Mixins
+@mixin flex-center  { display: flex; align-items: center; justify-content: center; }
+@mixin flex-between { display: flex; align-items: center; justify-content: space-between; }
+@mixin flex-start   { display: flex; align-items: center; }
+@mixin flex-col     { display: flex; flex-direction: column; }
+
+@mixin atelier-btn($variant: secondary, $size: md) {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-@mixin flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-@mixin flex-start {
-  display: flex;
-  align-items: center;
-}
-
-@mixin flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-// ─── Cards ────────────────────────────────────────────────────────────────────
-@mixin card($radius: $radius-xl) {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: $radius;
-  transition: border-color 0.15s ease;
-}
-
-// ─── Buttons ─────────────────────────────────────────────────────────────────
-@mixin btn-reset {
-  border: none;
-  background: none;
-  cursor: pointer;
+  gap: 6px;
+  border-radius: $radius-sm;
   font-family: $font-sans;
-  transition: $transition-fast;
-  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out), transform 0.1s var(--ease-out), opacity 0.15s;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  @if $size == sm  { height: 28px; padding: 0 12px; font-size: $text-xs; }
+  @if $size == md  { height: 36px; padding: 0 16px; font-size: $text-base; }
+  @if $size == lg  { height: 44px; padding: 0 22px; font-size: $text-md; }
+
+  @if $variant == primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    &:hover:not(:disabled) { background: var(--text-2); border-color: var(--text-2); }
+  }
+  @if $variant == accent {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    border-color: var(--accent);
+    &:hover:not(:disabled) { opacity: 0.88; }
+  }
+  @if $variant == secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--hairline-strong);
+    &:hover:not(:disabled) { background: var(--bg-tint); }
+  }
+  @if $variant == ghost {
+    background: transparent;
+    color: var(--text-2);
+    border-color: transparent;
+    &:hover:not(:disabled) { background: var(--bg-tint); color: var(--text); }
+  }
+  @if $variant == danger {
+    background: transparent;
+    color: var(--danger);
+    border-color: color-mix(in oklab, var(--danger) 40%, transparent);
+    &:hover:not(:disabled) { background: color-mix(in oklab, var(--danger) 10%, transparent); }
+  }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
 }
 
-@mixin btn-primary {
-  @include btn-reset;
-  padding: 9px 18px;
-  border-radius: $radius-md;
-  font-size: $text-sm;
-  font-weight: 700;
-  background: var(--accent);
-  color: var(--accentFg);
+@mixin btn-reset     { border: none; background: none; cursor: pointer; font-family: $font-sans; }
+@mixin btn-primary   { @include atelier-btn(primary, md); }
+@mixin btn-secondary { @include atelier-btn(secondary, md); }
+@mixin btn-danger    { @include atelier-btn(danger, md); }
 
-  &:hover:not(:disabled) { opacity: 0.85; }
-  &:disabled { opacity: 0.4; cursor: not-allowed; }
+@mixin card($radius: $radius-md) {
+  background: var(--bg-elev);
+  border: 1px solid var(--hairline);
+  border-radius: $radius;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s var(--ease-out), transform 0.2s var(--ease-spring);
+  &:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 }
 
-@mixin btn-secondary {
-  @include btn-reset;
-  padding: 9px 18px;
-  border-radius: $radius-md;
-  font-size: $text-sm;
-  font-weight: 700;
-  background: var(--panel2);
-  color: var(--text);
-  border: 1px solid var(--border2);
+@mixin hairline-bottom { box-shadow: inset 0 -1px 0 var(--hairline); }
+@mixin hairline-top    { box-shadow: inset 0 1px 0 var(--hairline); }
 
-  &:hover:not(:disabled) { background: var(--panel3); }
-  &:disabled { opacity: 0.4; cursor: not-allowed; }
-}
-
-@mixin btn-danger {
-  @include btn-reset;
-  padding: 8px 16px;
-  border-radius: $radius-md;
-  font-size: $text-sm;
-  font-weight: 700;
-  background: transparent;
-  color: var(--danger);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-
-  &:hover { background: var(--dangerDim); }
-}
-
-// ─── Form inputs ─────────────────────────────────────────────────────────────
 @mixin form-input {
   width: 100%;
-  padding: 10px 12px;
-  background: var(--panel2);
-  border: 1px solid var(--border2);
+  padding: 10px 14px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--hairline);
   border-radius: $radius-md;
   color: var(--text);
   font-size: $text-base;
   font-family: $font-sans;
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.15s;
-
-  &:focus { border-color: var(--accent); }
-  &::placeholder { color: var(--muted); }
+  transition: border-color 0.15s, box-shadow 0.15s;
+  &:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  &::placeholder { color: var(--text-4); }
 }
 
-// ─── Labels ──────────────────────────────────────────────────────────────────
-@mixin section-label {
-  font-size: $text-2xs;
-  font-weight: 700;
-  letter-spacing: 2.5px;
+@mixin eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--muted);
-  display: block;
+  color: var(--text-3);
+  font-family: $font-sans;
 }
+@mixin section-label { @include eyebrow; display: block; }
 
-// ─── Overlay / Modal ─────────────────────────────────────────────────────────
 @mixin overlay {
   position: fixed;
   inset: 0;
-  background: var(--overlay);
-  backdrop-filter: blur(4px);
+  background: color-mix(in oklab, var(--bg) 55%, #000 45%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: $z-modal;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: $sp-4;
+  animation: fadeIn 0.2s var(--ease-out);
 }
 
-// ─── Scrollbar ───────────────────────────────────────────────────────────────
 @mixin custom-scrollbar {
-  &::-webkit-scrollbar { width: 4px; height: 4px; }
-  &::-webkit-scrollbar-track { background: var(--bg); }
-  &::-webkit-scrollbar-thumb { background: var(--border2); border-radius: $radius-full; }
+  &::-webkit-scrollbar { width: 8px; height: 8px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--bg-tint-2);
+    border-radius: $radius-full;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
 }
 
-// ─── Text helpers ─────────────────────────────────────────────────────────────
-@mixin truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
+@mixin truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @mixin line-clamp($n: 2) {
   display: -webkit-box;
   -webkit-line-clamp: $n;
@@ -143,22 +133,20 @@
   overflow: hidden;
 }
 
-// ─── Empty state ─────────────────────────────────────────────────────────────
 @mixin empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: $sp-2;
-  color: var(--muted);
+  gap: $sp-3;
+  color: var(--text-3);
   min-height: 200px;
-  font-size: $text-sm;
+  font-size: $text-base;
 }
 
-// ─── View header ─────────────────────────────────────────────────────────────
 @mixin view-header {
   padding: 18px 24px 14px;
-  border-bottom: 1px solid var(--border);
+  box-shadow: inset 0 -1px 0 var(--hairline);
   display: flex;
   align-items: center;
   gap: $sp-3;

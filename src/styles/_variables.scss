@@ -1,34 +1,35 @@
-// ─── SCSS Static Variables ────────────────────────────────────────────────────
-// These are compile-time values. For theme-aware colors, use CSS custom
-// properties (var(--accent) etc.) defined in globals.scss.
+// ─── Atelier Design System — SCSS Variables ────────────────────────────────────
+// Compile-time SCSS variables. Theme-aware colours live as CSS custom
+// properties in globals.scss. This file holds static tokens only.
 
-// Typography
-$font-sans: 'Cabinet Grotesk', system-ui, -apple-system, sans-serif;
-$font-mono: 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+// ── Typography ────────────────────────────────────────────────────────────────
+$font-display: 'Instrument Serif', 'Times New Roman', Georgia, serif;
+$font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+$font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-// Type scale
+// ── Type scale ────────────────────────────────────────────────────────────────
 $text-2xs:  9px;
 $text-xs:   11px;
-$text-sm:   12px;
-$text-base: 13px;
+$text-sm:   12.5px;
+$text-base: 13.5px;
 $text-md:   14px;
 $text-lg:   16px;
 $text-xl:   18px;
-$text-2xl:  20px;
-$text-3xl:  22px;
-$text-4xl:  28px;
+$text-2xl:  22px;
+$text-3xl:  26px;
+$text-4xl:  32px;
 
-// Border radius
+// ── Border radius (matches Atelier --r- tokens) ───────────────────────────────
 $radius-xs:   4px;
 $radius-sm:   6px;
-$radius-md:   8px;
-$radius-lg:   10px;
-$radius-xl:   12px;
-$radius-2xl:  14px;
-$radius-3xl:  18px;
+$radius-md:   10px;
+$radius-lg:   16px;
+$radius-xl:   20px;
+$radius-2xl:  24px;
+$radius-3xl:  32px;
 $radius-full: 9999px;
 
-// Spacing
+// ── Spacing ───────────────────────────────────────────────────────────────────
 $sp-1: 4px;
 $sp-2: 8px;
 $sp-3: 12px;
@@ -37,16 +38,19 @@ $sp-5: 20px;
 $sp-6: 24px;
 $sp-7: 28px;
 $sp-8: 32px;
+$sp-9: 36px;
 
-// Z-index layers
+// ── Z-index layers ────────────────────────────────────────────────────────────
 $z-base:    1;
 $z-sidebar: 10;
 $z-topbar:  20;
-$z-drawer:  100;
-$z-modal:   200;
-$z-toast:   300;
+$z-drawer:  50;
+$z-modal:   60;
+$z-toast:   100;
 
-// Transitions
-$transition-fast:   all 0.12s ease;
-$transition-normal: all 0.2s ease;
-$transition-slow:   all 0.3s ease;
+// ── Transitions — Atelier easing ─────────────────────────────────────────────
+$ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+$ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+$transition-fast:   all 0.15s #{$ease-out};
+$transition-spring: all 0.22s #{$ease-spring};
+$transition-slow:   all 0.3s  #{$ease-out};
