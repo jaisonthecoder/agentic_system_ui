@@ -1,0 +1,165 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.topbar {
+  height: 52px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  @include flex-start;
+  padding: 0 $sp-5;
+  gap: $sp-4;
+  flex-shrink: 0;
+  z-index: $z-topbar;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  @include flex-start;
+  @include btn-reset;
+  gap: $sp-2;
+  font-size: $text-lg;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  flex-shrink: 0;
+
+  &:hover { color: var(--accent); }
+}
+
+.logoDot {
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  background: linear-gradient(135deg, var(--accent), var(--blue));
+  @include flex-center;
+  font-size: $text-2xs;
+  color: #000;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.nav {
+  @include flex-start;
+  gap: 2px;
+  overflow-x: auto;
+  @include custom-scrollbar;
+}
+
+.navBtn {
+  @include btn-reset;
+  padding: 6px 14px;
+  border-radius: $radius-sm;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: var(--muted2);
+  background: transparent;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text);
+    background: var(--panel2);
+  }
+}
+
+.navBtnActive {
+  color: var(--text);
+  background: var(--panel2);
+  border-color: var(--border2);
+}
+
+.right {
+  margin-left: auto;
+  @include flex-start;
+  gap: $sp-2;
+  flex-shrink: 0;
+}
+
+.urlBadge {
+  padding: 4px 10px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: $radius-sm;
+  font-family: $font-mono;
+  font-size: $text-xs;
+  color: var(--muted2);
+  max-width: 180px;
+  @include truncate;
+}
+
+.statusPill {
+  @include flex-start;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: 600;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.statusOnline {
+  background: var(--accentDim);
+  border-color: rgba(110, 231, 183, 0.25);
+  color: var(--accent);
+}
+
+.statusOffline {
+  background: var(--dangerDim);
+  border-color: rgba(248, 113, 113, 0.25);
+  color: var(--danger);
+}
+
+.statusConnecting {
+  background: var(--amberDim);
+  border-color: rgba(251, 191, 36, 0.25);
+  color: var(--amber);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  background: currentColor;
+  animation: blink 2s infinite;
+  flex-shrink: 0;
+}
+
+.themeToggle {
+  @include btn-reset;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  @include flex-center;
+  font-size: 15px;
+  color: var(--muted2);
+  border: 1px solid var(--border2);
+  background: var(--panel2);
+
+  &:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--accentDim);
+  }
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  @include flex-center;
+  font-size: $text-xs;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  user-select: none;
+}

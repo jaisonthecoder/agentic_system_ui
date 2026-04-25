@@ -1,0 +1,84 @@
+// Shared SCSS for view components — imported via @use in each module
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrap { @include flex-col; height: 100%; overflow: hidden; }
+
+.header {
+  padding: 18px $sp-6 14px;
+  border-bottom: 1px solid var(--border);
+  @include flex-start;
+  gap: $sp-3;
+  flex-shrink: 0;
+}
+
+.title { font-size: $text-2xl; font-weight: 800; letter-spacing: -0.5px; flex: 1; }
+.desc  { font-size: $text-sm; color: var(--muted2); margin-top: 2px; }
+
+.headerBtns { display: flex; gap: $sp-2; }
+
+.btnPrimary   { @include btn-primary; }
+.btnSecondary { @include btn-secondary; }
+.btnDanger    { @include btn-danger; }
+
+.body { flex: 1; overflow-y: auto; padding: $sp-5 $sp-6; @include custom-scrollbar; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  @include card($radius-2xl);
+  padding: $sp-5;
+  @include flex-col;
+  gap: $sp-3;
+  cursor: pointer;
+
+  &:hover { border-color: var(--border2); }
+  &.selected { border-color: var(--accent); }
+}
+
+.overlay { @include overlay; }
+
+.modal {
+  background: var(--panel);
+  border-radius: $radius-2xl;
+  padding: $sp-7;
+  width: 480px;
+  max-width: 95vw;
+  border: 1px solid var(--border);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.22s ease;
+}
+
+.modalTitle { font-size: $text-lg; font-weight: 800; margin-bottom: $sp-4; }
+
+.fieldLabel {
+  font-size: $text-xs;
+  font-weight: 600;
+  color: var(--muted2);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.input    { @include form-input; margin-bottom: 14px; }
+.textarea { @include form-input; resize: vertical; min-height: 80px; margin-bottom: 14px; }
+.select   { @include form-input; margin-bottom: 14px; }
+
+.modalBtns { display: flex; gap: $sp-2; margin-top: $sp-4; }
+
+.empty { @include empty-state; height: 200px; grid-column: 1 / -1; }
+.emptyIcon { font-size: 40px; opacity: 0.4; }
+
+// Section card
+.sectionCard {
+  background: var(--panel2);
+  border-radius: $radius-md;
+  padding: $sp-3;
+  margin-bottom: $sp-3;
+}
+
+.sectionLabel { @include section-label; margin-bottom: $sp-2; }

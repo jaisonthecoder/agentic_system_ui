@@ -1,0 +1,116 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.sidebar {
+  width: 220px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  @include flex-col;
+  flex-shrink: 0;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}
+
+.section {
+  padding: $sp-4 $sp-3 $sp-2;
+}
+
+.label {
+  @include section-label;
+  padding: 0 $sp-2;
+  margin-bottom: 6px;
+}
+
+.item {
+  @include btn-reset;
+  @include flex-start;
+  gap: 10px;
+  padding: 9px $sp-3;
+  border-radius: $radius-md;
+  font-size: $text-base;
+  font-weight: 500;
+  margin-bottom: 2px;
+  color: var(--muted2);
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    background: var(--panel2);
+    color: var(--text);
+  }
+}
+
+.itemActive {
+  background: var(--accentDim) !important;
+  color: var(--accent) !important;
+
+  &:hover {
+    background: var(--accentDim) !important;
+  }
+}
+
+.itemIcon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.itemBadge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #000;
+  font-size: $text-2xs;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: $radius-full;
+  line-height: 1.6;
+}
+
+.footer {
+  margin-top: auto;
+  padding: $sp-3;
+  border-top: 1px solid var(--border);
+}
+
+.userCard {
+  @include flex-start;
+  gap: 10px;
+  padding: 10px;
+  border-radius: $radius-md;
+  background: var(--panel2);
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  @include flex-center;
+  font-size: $text-xs;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.userName {
+  font-size: $text-base;
+  font-weight: 700;
+  @include truncate;
+}
+
+.userRole {
+  font-size: $text-2xs;
+  color: var(--muted2);
+  letter-spacing: 0.5px;
+}
+
+.quickItem {
+  font-size: $text-sm;
+}
+

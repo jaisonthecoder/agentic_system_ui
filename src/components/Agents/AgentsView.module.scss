@@ -1,0 +1,174 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrap  { @include flex-col; height: 100%; overflow: hidden; }
+
+.header {
+  padding: 18px $sp-6 14px;
+  border-bottom: 1px solid var(--border);
+  @include flex-start;
+  gap: $sp-3;
+  flex-shrink: 0;
+}
+
+.title { font-size: $text-2xl; font-weight: 800; letter-spacing: -0.5px; flex: 1; }
+.addBtn { @include btn-primary; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  padding: $sp-5 $sp-6;
+  overflow-y: auto;
+  flex: 1;
+  @include custom-scrollbar;
+}
+
+.card {
+  @include card($radius-2xl);
+  padding: $sp-5;
+  @include flex-col;
+  gap: $sp-3;
+  cursor: pointer;
+
+  &:hover { border-color: var(--border2); }
+  &.selected { border-color: var(--accent); }
+}
+
+.iconBox {
+  width: 46px;
+  height: 46px;
+  border-radius: $radius-xl;
+  @include flex-center;
+  font-size: 22px;
+}
+
+.cardName { font-size: $text-md; font-weight: 800; margin-bottom: 2px; }
+
+.archTag {
+  font-size: $text-2xs;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.cardDesc {
+  font-size: $text-sm;
+  color: var(--muted2);
+  line-height: 1.6;
+  @include line-clamp(2);
+}
+
+.skillChips { display: flex; flex-wrap: wrap; gap: $sp-1; }
+
+.chip {
+  font-size: $text-2xs;
+  padding: 2px 6px;
+  border-radius: $radius-xs;
+  background: var(--panel2);
+  color: var(--muted2);
+  border: 1px solid var(--border2);
+}
+
+.cardFooter { display: flex; gap: $sp-2; margin-top: auto; }
+
+.runBtn {
+  @include btn-reset;
+  flex: 1;
+  padding: 8px 0;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cfgBtn {
+  @include btn-secondary;
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.empty { @include empty-state; height: 200px; grid-column: 1/-1; }
+.emptyIcon { font-size: 40px; opacity: 0.4; }
+
+// ─── Overlay + Modal ──────────────────────────────────────────────────────────
+.overlay { @include overlay; }
+
+.modal {
+  background: var(--panel);
+  border-radius: $radius-2xl;
+  padding: $sp-7;
+  width: 480px;
+  max-width: 95vw;
+  border: 1px solid var(--border);
+  animation: slideUp 0.22s ease;
+}
+
+.modalTitle { font-size: $text-lg; font-weight: 800; margin-bottom: $sp-4; }
+
+.fieldLabel {
+  font-size: $text-xs;
+  font-weight: 600;
+  color: var(--muted2);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.input    { @include form-input; }
+.textarea { @include form-input; resize: vertical; min-height: 80px; }
+.select   { @include form-input; }
+
+.modalBtns { display: flex; gap: $sp-2; margin-top: $sp-4; }
+.btnPrimary { @include btn-primary; flex: 1; }
+.btnSecondary { @include btn-secondary; flex: 1; }
+.btnDanger  { @include btn-danger; }
+
+// ─── Drawer ───────────────────────────────────────────────────────────────────
+.drawer {
+  position: fixed;
+  right: 0; top: 0; bottom: 0;
+  width: 420px;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  @include flex-col;
+  z-index: $z-drawer;
+  animation: slideInRight 0.2s ease;
+}
+
+.drawerHeader {
+  padding: 18px $sp-5 14px;
+  border-bottom: 1px solid var(--border);
+  @include flex-start;
+  gap: $sp-3;
+}
+
+.drawerTitle { flex: 1; font-size: $text-lg; font-weight: 800; }
+.drawerClose {
+  @include btn-reset;
+  font-size: 20px;
+  color: var(--muted);
+  &:hover { color: var(--text); }
+}
+
+.drawerBody { flex: 1; overflow-y: auto; padding: $sp-5; @include custom-scrollbar; }
+
+.sectionCard { background: var(--panel2); border-radius: $radius-md; padding: $sp-3; margin-bottom: $sp-3; }
+.sectionLabel { @include section-label; margin-bottom: $sp-2; }
+
+.runRow {
+  display: flex;
+  gap: $sp-2;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border2);
+}
+
+.runGoal {
+  flex: 1;
+  font-size: $text-xs;
+  @include truncate;
+}
+
+.runStatus { font-size: $text-2xs; font-weight: 700; }
+.runMeta   { font-size: $text-2xs; color: var(--muted2); }

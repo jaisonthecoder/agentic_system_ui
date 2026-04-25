@@ -1,0 +1,144 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrap    { @include flex-col; height: 100%; overflow: hidden; }
+.header  { padding: 18px $sp-6 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.hdrRow  { @include flex-start; gap: $sp-3; margin-bottom: 10px; }
+.title   { font-size: $text-2xl; font-weight: 800; letter-spacing: -0.5px; flex: 1; }
+.addBtn  { @include btn-primary; }
+
+.viewBtn {
+  @include btn-secondary;
+  padding: 6px 12px;
+  font-size: $text-sm;
+  &.active { background: var(--panel2); }
+}
+
+.filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.search  {
+  @include form-input;
+  width: 180px;
+  padding: 6px 12px;
+  border-radius: $radius-md;
+}
+
+.filterBtn {
+  @include btn-reset;
+  padding: 5px 12px;
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: 600;
+  color: var(--muted2);
+  &:hover { color: var(--text); background: var(--panel2); }
+  &.active { background: var(--accentDim); color: var(--accent); }
+}
+
+.body { flex: 1; overflow-y: auto; padding: $sp-4 $sp-6; @include custom-scrollbar; }
+
+// ─── Group cards ──────────────────────────────────────────────────────────────
+.groupGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 16px; }
+
+.gCard {
+  @include card($radius-xl);
+  padding: $sp-4;
+  cursor: pointer;
+  &:hover { border-color: var(--border2); }
+  &.selected { border-color: var(--accent); }
+}
+.gIcon   { font-size: 32px; margin-bottom: $sp-2; }
+.gLabel  { font-size: $text-md; font-weight: 800; margin-bottom: $sp-1; }
+.gDesc   { font-size: $text-xs; color: var(--muted2); line-height: 1.5; margin-bottom: 10px; @include line-clamp(2); }
+.gFooter { @include flex-start; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+
+// ─── Flat skill cards ─────────────────────────────────────────────────────────
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+
+.card {
+  @include card($radius-xl);
+  padding: 14px;
+  cursor: pointer;
+  &:hover { border-color: var(--border2); }
+  &.selected { border-color: var(--accent); }
+}
+.icon   { font-size: 24px; margin-bottom: 6px; }
+.name   { font-size: $text-base; font-weight: 700; margin-bottom: 3px; word-break: break-all; }
+.desc   { font-size: $text-xs; color: var(--muted2); line-height: 1.5; margin-bottom: $sp-2; @include line-clamp(2); }
+.footer2 { @include flex-start; justify-content: space-between; gap: 6px; }
+
+.catTag {
+  font-size: $text-2xs;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: $radius-xs;
+}
+.srcTag {
+  font-size: $text-2xs;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: $radius-xs;
+  background: var(--panel2);
+  color: var(--muted2);
+}
+.calls    { font-size: $text-2xs; color: var(--muted2); }
+.countBadge { font-size: $text-2xs; font-weight: 700; padding: 2px 8px; border-radius: $radius-full; background: var(--panel2); color: var(--muted2); }
+.connBadge  { font-size: $text-2xs; font-weight: 700; padding: 2px 7px; border-radius: $radius-xs; background: var(--blueDim); color: var(--blue); }
+
+// ─── Detail panel ─────────────────────────────────────────────────────────────
+.panel {
+  position: fixed;
+  right: 0; top: 0; bottom: 0;
+  width: 420px;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  padding: $sp-6;
+  overflow-y: auto;
+  z-index: $z-drawer;
+  @include flex-col;
+  gap: 14px;
+  animation: slideInRight 0.2s ease;
+  @include custom-scrollbar;
+}
+.pHdr    { @include flex-start; gap: $sp-3; align-items: flex-start; }
+.pIcon   { font-size: 36px; flex-shrink: 0; }
+.pName   { font-size: $text-xl; font-weight: 800; word-break: break-all; }
+.pSub    { font-size: $text-xs; color: var(--muted2); margin-top: 2px; }
+.closeBtn { @include btn-reset; font-size: 20px; color: var(--muted); flex-shrink: 0; margin-left: auto; &:hover { color: var(--text); } }
+.sSection { background: var(--panel2); border-radius: $radius-md; padding: $sp-3; }
+.sLabel   { @include section-label; margin-bottom: $sp-2; }
+
+.skRow {
+  @include flex-start;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: $radius-md;
+  cursor: pointer;
+  margin-bottom: 4px;
+  align-items: flex-start;
+  &:hover { background: var(--panel3); }
+  &.selected { background: var(--accentDim); border: 1px solid var(--accent); }
+}
+.skIcon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.skName { font-size: $text-sm; font-weight: 700; margin-bottom: 2px; }
+.skDesc { font-size: $text-2xs; color: var(--muted2); line-height: 1.4; }
+
+.argInput  { @include form-input; margin-top: $sp-1; font-size: $text-sm; }
+.testBtn   { @include btn-primary; width: 100%; margin-top: $sp-2; }
+.testResult {
+  background: #0a1a0a;
+  border-radius: $radius-md;
+  padding: $sp-3;
+  font-size: $text-xs;
+  color: #4ade80;
+  font-family: $font-mono;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow: auto;
+}
+.dangerBtn { @include btn-danger; }
+
+.empty     { @include empty-state; height: 200px; }
+.emptyIcon { font-size: 40px; opacity: 0.4; }

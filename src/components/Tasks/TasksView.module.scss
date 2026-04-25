@@ -1,0 +1,108 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrap { @include flex-col; height: 100%; }
+
+.header {
+  padding: $sp-6 $sp-7 18px;
+  border-bottom: 1px solid var(--border);
+  @include flex-start;
+  gap: $sp-4;
+  flex-shrink: 0;
+}
+
+.titleGroup { flex: 1; }
+.title { font-size: $text-3xl; font-weight: 800; letter-spacing: -0.5px; }
+.desc  { font-size: $text-sm;  color: var(--muted2); margin-top: 2px; }
+
+.btnPrimary   { @include btn-primary; }
+.btnSecondary { @include btn-secondary; }
+
+.body { padding: $sp-5 $sp-7; overflow-y: auto; flex: 1; @include custom-scrollbar; }
+
+.filters { display: flex; gap: $sp-2; margin-bottom: 18px; flex-wrap: wrap; }
+
+.filterBtn {
+  @include btn-reset;
+  padding: 6px 16px;
+  border-radius: $radius-full;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: var(--muted2);
+  background: transparent;
+
+  &:hover { color: var(--text); background: var(--panel2); }
+  &.active { background: var(--accentDim); color: var(--accent); }
+}
+
+.list { @include flex-col; gap: $sp-2; }
+
+.card {
+  @include card;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover { border-color: var(--border2); }
+}
+
+.cardIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-lg;
+  flex-shrink: 0;
+  @include flex-center;
+  font-size: 16px;
+}
+
+.cardGoal {
+  font-size: $text-md;
+  font-weight: 700;
+  margin-bottom: 3px;
+  @include truncate;
+}
+
+.cardMeta { font-size: $text-xs; color: var(--muted2); }
+
+.badge {
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.empty { @include empty-state; height: 200px; }
+.emptyIcon { font-size: 40px; opacity: 0.4; }
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+.overlay { @include overlay; }
+
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: $radius-3xl;
+  padding: $sp-7;
+  max-width: 480px;
+  width: 90%;
+  animation: slideUp 0.22s ease;
+}
+
+.modalTitle { font-size: $text-xl; font-weight: 800; margin-bottom: 6px; }
+.modalDesc  { font-size: $text-base; color: var(--muted2); margin-bottom: $sp-5; line-height: 1.6; }
+
+.fieldLabel {
+  font-size: $text-sm;
+  font-weight: 700;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.textarea { @include form-input; resize: vertical; min-height: 70px; margin-bottom: 14px; }
+.select   { @include form-input; margin-bottom: 14px; }
+
+.modalFooter { display: flex; gap: $sp-2; justify-content: flex-end; margin-top: $sp-5; }

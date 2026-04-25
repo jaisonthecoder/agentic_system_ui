@@ -1,0 +1,166 @@
+@use 'variables' as *;
+
+// ─── Flexbox ──────────────────────────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── Cards ────────────────────────────────────────────────────────────────────
+@mixin card($radius: $radius-xl) {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: $radius;
+  transition: border-color 0.15s ease;
+}
+
+// ─── Buttons ─────────────────────────────────────────────────────────────────
+@mixin btn-reset {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: $font-sans;
+  transition: $transition-fast;
+  text-decoration: none;
+}
+
+@mixin btn-primary {
+  @include btn-reset;
+  padding: 9px 18px;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--accentFg);
+
+  &:hover:not(:disabled) { opacity: 0.85; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+@mixin btn-secondary {
+  @include btn-reset;
+  padding: 9px 18px;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  font-weight: 700;
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--border2);
+
+  &:hover:not(:disabled) { background: var(--panel3); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+@mixin btn-danger {
+  @include btn-reset;
+  padding: 8px 16px;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  font-weight: 700;
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+
+  &:hover { background: var(--dangerDim); }
+}
+
+// ─── Form inputs ─────────────────────────────────────────────────────────────
+@mixin form-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: $radius-md;
+  color: var(--text);
+  font-size: $text-base;
+  font-family: $font-sans;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+
+  &:focus { border-color: var(--accent); }
+  &::placeholder { color: var(--muted); }
+}
+
+// ─── Labels ──────────────────────────────────────────────────────────────────
+@mixin section-label {
+  font-size: $text-2xs;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+}
+
+// ─── Overlay / Modal ─────────────────────────────────────────────────────────
+@mixin overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  backdrop-filter: blur(4px);
+  z-index: $z-modal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $sp-4;
+}
+
+// ─── Scrollbar ───────────────────────────────────────────────────────────────
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar { width: 4px; height: 4px; }
+  &::-webkit-scrollbar-track { background: var(--bg); }
+  &::-webkit-scrollbar-thumb { background: var(--border2); border-radius: $radius-full; }
+}
+
+// ─── Text helpers ─────────────────────────────────────────────────────────────
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin line-clamp($n: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $n;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ─── Empty state ─────────────────────────────────────────────────────────────
+@mixin empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-2;
+  color: var(--muted);
+  min-height: 200px;
+  font-size: $text-sm;
+}
+
+// ─── View header ─────────────────────────────────────────────────────────────
+@mixin view-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  flex-shrink: 0;
+}
