@@ -310,3 +310,47 @@ export function fetchPortfolioHealth(): Promise<unknown> {
   return get('/api/v1/projects/portfolio-health')
 }
 
+// ─── Skill Builder ─────────────────────────────────────────────────────────────
+export interface SkillPreviewRecord {
+  name: string
+  description?: string
+  icon?: string
+  source_type?: string
+  category?: string
+  parameters?: Array<{ name: string; type?: string; required?: boolean; description?: string }>
+}
+
+export interface BuildResult {
+  preview?: SkillPreviewRecord[]
+  message?: string
+  installed?: number
+}
+
+export function buildFromDocument(content: string, filename = 'document.md'): Promise<BuildResult> {
+  return post('/api/v1/store/build/from-document', { content, filename })
+}
+
+export function buildFromOpenAPI(spec: string): Promise<BuildResult> {
+  return post('/api/v1/store/build/from-openapi', { spec })
+}
+
+export function buildFromDescription(description: string): Promise<BuildResult> {
+  return post('/api/v1/store/build/from-description', { description })
+}
+
+export function buildFromForm(data: unknown): Promise<BuildResult> {
+  return post('/api/v1/store/build/from-form', data)
+}
+
+export function buildFromPython(code: string): Promise<BuildResult> {
+  return post('/api/v1/store/build/from-python', { code })
+}
+
+export function installPreview(skills: SkillPreviewRecord[]): Promise<BuildResult> {
+  return post('/api/v1/store/build/install', { skills })
+}
+
+export function fetchStoreSkillAnalytics(): Promise<{ analytics: Record<string, number> }> {
+  return get('/api/v1/store/analytics')
+}
+

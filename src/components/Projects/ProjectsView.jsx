@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { fetchProjects } from '../../api'
 import NewProjectWizard from './NewProjectWizard'
 import ProjectDetail from './ProjectDetail'
+import styles from './ProjectsView.module.scss'
 
 const STAGE_SHORT = {
   intent_extraction:   'Intent',
@@ -18,11 +19,11 @@ const STAGE_SHORT = {
   handover:            'Handover',
 }
 
-const STATUS_COLORS = {
-  active:  '#22c55e',
-  failed:  '#ef4444',
-  done:    '#6366f1',
-  paused:  '#f59e0b',
+const STATUS_CLASS = {
+  active: styles.statusActive,
+  failed: styles.statusFailed,
+  done:   styles.statusDone,
+  paused: styles.statusPaused,
 }
 
 function fmtDate(ts) {
@@ -30,26 +31,26 @@ function fmtDate(ts) {
   const d = new Date(ts * 1000)
   const now = Date.now()
   const diff = now - ts * 1000
-  if (diff < 60_000) return 'just now'
-  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`
+  if (diff < 60_000)     return 'just now'
+  if (diff < 3_600_000)  return `${Math.floor(diff / 60_000)}m ago`
   if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
 }
 
 const PATTERN_SHORT = {
-  'angular-mfe-dotnet-cqrs': 'Angular + .NET',
-  'angular-mfe-dotnet-camunda': 'Angular + Camunda',
+  'angular-mfe-dotnet-cqrs':       'Angular + .NET',
+  'angular-mfe-dotnet-camunda':    'Angular + Camunda',
   'dotnet-microservices-rabbitmq': '.NET Microservices',
-  'dotnet-api-only': '.NET API',
-  'legacy-migration': 'Migration',
+  'dotnet-api-only':               '.NET API',
+  'legacy-migration':              'Migration',
 }
 
 export default function ProjectsView() {
-  const [projects, setProjects]   = useState([])
-  const [loading, setLoading]     = useState(true)
-  const [showWizard, setWizard]   = useState(false)
-  const [selected, setSelected]   = useState(null)   // project_id to show detail
-  const [search, setSearch]       = useState('')
+  const [projects, setProjects] = useState([])
+  const [loading, setLoading]   = useState(true)
+  const [showWizard, setWizard] = useState(false)
+  const [selected, setSelected] = useState(null)
+  const [search, setSearch]     = useState('')
 
   const load = useCallback(async () => {
     try {
@@ -80,129 +81,107 @@ export default function ProjectsView() {
   }
 
   const filtered = projects.filter(p =>
-    !search || p.name.toLowerCase().includes(search.toLowerCase()) ||
+    !search ||
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
     (p.description || '').toLowerCase().includes(search.toLowerCase())
   )
 
   return (
-    <div>
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <div>
-          <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800 }}>AI Portal Projects</h2>
-          <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
+    <div className={styles.wrap}>
+
+      {/* ── Header ── */}
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
+          <h2 className={styles.title}>AI Portal Projects</h2>
+          <div className={styles.subtitle}>
             {projects.length} project{projects.length !== 1 ? 's' : ''} · Upload BRD/HLD to create a new project
           </div>
         </div>
-        <div style={{ flex: 1 }} />
         <input
-          value={search} onChange={e => setSearch(e.target.value)}
+          className={styles.search}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
           placeholder="Search projects…"
-          style={{
-            padding: '7px 12px', borderRadius: 8, border: '1px solid var(--border)',
-            background: 'var(--panel2)', color: 'var(--text)', fontSize: 13, width: 200,
-          }}
         />
-        <button
-          onClick={() => setWizard(true)}
-          style={{
-            padding: '9px 18px', borderRadius: 9, border: 'none',
-            background: 'var(--accent)', color: '#000', fontWeight: 700, fontSize: 13, cursor: 'pointer',
-          }}
-        >
+        <button className={styles.newBtn} onClick={() => setWizard(true)}>
           + New Project
         </button>
       </div>
 
-      {/* Content */}
-      {loading ? (
-        <div style={{ textAlign: 'center', padding: 60, color: 'var(--muted)', fontSize: 14 }}>Loading projects…</div>
-      ) : filtered.length === 0 ? (
-        <div style={{
-          textAlign: 'center', padding: '60px 40px', borderRadius: 16,
-          border: '2px dashed var(--border)', color: 'var(--muted)',
-        }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>📂</div>
-          <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>
-            {search ? 'No projects match your search' : 'No projects yet'}
+      {/* ── Content ── */}
+      <div className={styles.body}>
+        {loading ? (
+          <div className={styles.empty}>
+            <div className={styles.emptyIcon}>🏗️</div>
+            <div>Loading projects…</div>
           </div>
-          <div style={{ fontSize: 13, marginBottom: 20 }}>
-            {search ? 'Try a different search term.' : 'Upload a BRD or HLD document to get started.'}
+        ) : filtered.length === 0 ? (
+          <div className={styles.emptyDash}>
+            <div className={styles.emptyIcon}>📂</div>
+            <div className={styles.emptyTitle}>
+              {search ? 'No projects match your search' : 'No projects yet'}
+            </div>
+            <div className={styles.emptySub}>
+              {search ? 'Try a different search term.' : 'Upload a BRD or HLD document to get started.'}
+            </div>
+            {!search && (
+              <button className={styles.newBtn} onClick={() => setWizard(true)}>
+                Create First Project
+              </button>
+            )}
           </div>
-          {!search && (
-            <button onClick={() => setWizard(true)} style={{
-              padding: '10px 24px', borderRadius: 9, border: 'none',
-              background: 'var(--accent)', color: '#000', fontWeight: 700, fontSize: 14, cursor: 'pointer',
-            }}>
-              Create First Project
-            </button>
-          )}
-        </div>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
-          {filtered.map(p => {
-            const statusColor = STATUS_COLORS[p.status] || '#6366f1'
-            const complianceScope = (() => { try { return JSON.parse(p.compliance_scope || '[]') } catch { return [] } })()
-            return (
-              <div
-                key={p.id}
-                onClick={() => setSelected(p.id)}
-                style={{
-                  padding: 18, borderRadius: 14, border: '1px solid var(--border)',
-                  background: 'var(--panel)', cursor: 'pointer', transition: 'border-color .15s',
-                }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
-                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
-              >
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-                    background: 'linear-gradient(135deg, var(--blue), var(--purple))',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
-                  }}>🏗️</div>
-                  <div style={{ flex: 1, overflow: 'hidden' }}>
-                    <div style={{ fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {p.name}
+        ) : (
+          <div className={styles.grid}>
+            {filtered.map(p => {
+              const statusCls = STATUS_CLASS[p.status] ?? styles.statusDone
+              const complianceScope = (() => {
+                try { return JSON.parse(p.compliance_scope || '[]') } catch { return [] }
+              })()
+              return (
+                <div
+                  key={p.id}
+                  className={styles.card}
+                  onClick={() => setSelected(p.id)}
+                >
+                  {/* Card top row: icon + name + status */}
+                  <div className={styles.cardTop}>
+                    <div className={styles.cardIcon}>🏗️</div>
+                    <div className={styles.cardMeta}>
+                      <div className={styles.cardName}>{p.name}</div>
+                      <div className={styles.cardPattern}>
+                        {PATTERN_SHORT[p.pattern] || p.pattern || 'No pattern'}
+                        {p.team && ` · ${p.team}`}
+                      </div>
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
-                      {PATTERN_SHORT[p.pattern] || p.pattern || 'No pattern'}
-                      {p.team && ` · ${p.team}`}
-                    </div>
+                    <div className={`${styles.statusBadge} ${statusCls}`}>{p.status}</div>
                   </div>
-                  <div style={{
-                    padding: '2px 8px', borderRadius: 20, fontSize: 10, fontWeight: 700,
-                    background: statusColor + '22', color: statusColor, border: `1px solid ${statusColor}44`,
-                    flexShrink: 0,
-                  }}>{p.status}</div>
-                </div>
 
-                {p.description && (
-                  <div style={{ fontSize: 12, color: 'var(--muted2)', lineHeight: 1.5, marginBottom: 10, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {p.description}
-                  </div>
-                )}
+                  {/* Description */}
+                  {p.description && (
+                    <div className={styles.cardDesc}>{p.description}</div>
+                  )}
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  {/* Stage badge */}
-                  <div style={{
-                    padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600,
-                    background: 'var(--accent-dim)', color: 'var(--accent)',
-                  }}>
-                    {STAGE_SHORT[p.current_stage] || p.current_stage}
+                  {/* Footer: stage + compliance + date */}
+                  <div className={styles.cardFooter}>
+                    <span className={styles.stageBadge}>
+                      {STAGE_SHORT[p.current_stage] || p.current_stage}
+                    </span>
+                    {complianceScope.slice(0, 2).map(c => (
+                      <span key={c} className={styles.complianceBadge}>{c}</span>
+                    ))}
+                    <span className={styles.cardDate}>{fmtDate(p.updated_at)}</span>
                   </div>
-                  {/* Compliance badges */}
-                  {complianceScope.slice(0, 2).map(c => (
-                    <span key={c} style={{ padding: '2px 7px', borderRadius: 20, fontSize: 10, fontWeight: 600, background: '#ef444422', color: '#f87171', border: '1px solid #ef444444' }}>{c}</span>
-                  ))}
-                  <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--muted)' }}>{fmtDate(p.updated_at)}</span>
                 </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* ── Wizard ── */}
+      {showWizard && (
+        <NewProjectWizard onClose={() => setWizard(false)} onCreated={handleCreated} />
       )}
-
-      {showWizard && <NewProjectWizard onClose={() => setWizard(false)} onCreated={handleCreated} />}
     </div>
   )
 }

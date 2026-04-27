@@ -16,6 +16,7 @@ function Wordmark() {
 
 // ── Nav items with numbered index ──────────────────────────────────────────────
 const NAV = [
+  { to: '/dashboard',  label: 'Dashboard'    },
   { to: '/projects',   label: 'Projects',    eyebrow: 'BROWSE' },
   { to: '/chat',       label: 'AI Dispatch'  },
   { to: '/tasks',      label: 'Work Queue',  badge: true },
@@ -23,7 +24,6 @@ const NAV = [
   { to: '/store',      label: 'Skill Store'  },
   { to: '/connectors', label: 'Connectors'   },
   { to: '/skills',     label: 'Registry'     },
-  { to: '/dashboard',  label: 'Dashboard'    },
 ]
 
 const QUICK = [
